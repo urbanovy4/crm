@@ -3,6 +3,7 @@ const jwt = require('jsonwebtoken');
 
 const keys = require('../config/keys');
 const User = require('../models/User');
+const errorHandler = require('../utils/errorHandler');
 
 async function checkIfUserExist(req) {
     const candidate = User.findOne({
@@ -64,7 +65,7 @@ module.exports.register = async function (req, res) {
                 message: `User successfully created. ${user}`
             });
         } catch (e) {
-            console.error(e.message);
+            errorHandler(res, e);
         }
     }
 }
