@@ -1,0 +1,19 @@
+{
+  "name": "crm",
+  "version": "0.0.1",
+  "description": "start-developing",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node index.js",
+    "dev": "nodemon index.js"
+  },
+  "keywords": [
+    "crm"
+  ],
+  "author": "mac9bmx",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.17.1"
+  }
+}
