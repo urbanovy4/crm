@@ -6,7 +6,10 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node index.js",
-    "dev": "nodemon index.js"
+    "dev": "nodemon index.js",
+    "client-install": "npm install --prefix client",
+    "client": "npm run start --prefix client",
+    "develop": "concurrently \"npm run dev\" \"npm run client\""
   },
   "keywords": [
     "crm"
@@ -26,6 +29,7 @@
     "passport-jwt": "^4.0.0"
   },
   "devDependencies": {
+    "concurrently": "^6.2.0",
     "nodemon": "^2.0.12"
   }
 }
