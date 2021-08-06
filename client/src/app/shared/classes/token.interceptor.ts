@@ -1,12 +1,15 @@
 import {Injectable} from "@angular/core";
 import {AuthService} from "../services/auth.service";
-import {HttpEvent, HttpHandler, HttpInterceptor, HttpRequest} from "@angular/common/http";
-import {Observable} from "rxjs";
+import {HttpErrorResponse, HttpEvent, HttpHandler, HttpInterceptor, HttpRequest} from "@angular/common/http";
+import {Observable, throwError} from "rxjs";
+import {catchError} from "rxjs/operators";
+import {Router} from "@angular/router";
 
 @Injectable()
 export class TokenInterceptor implements HttpInterceptor {
   constructor(
-    private authService: AuthService
+    private authService: AuthService,
+    private router: Router
   ) {
   }
 
@@ -19,7 +22,24 @@ export class TokenInterceptor implements HttpInterceptor {
       })
     }
 
-    return next.handle(req);
+    return next.handle(req)
+      .pipe(
+        catchError(
+          (error: HttpErrorResponse) => this.authErrorHandler(error)
+        )
+      );
+  }
+
+  private authErrorHandler(error: HttpErrorResponse): Observable<any> {
+    if (error.status === 401) {
+      this.router.navigate(['/login'], {
+        queryParams: {
+          sessionsFailed: true
+        }
+      })
+    }
+
+    return throwError(error);
   }
 
 }
