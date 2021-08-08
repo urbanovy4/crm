@@ -1,3 +1,5 @@
+import {MaterialInstance} from "./material.service";
+
 export interface User {
   email: string;
   password: string;
@@ -29,7 +31,7 @@ export interface Position {
 }
 
 export interface Order {
-  dane?: Date;
+  date?: Date;
   order?: number;
   user?: string;
   list: OrderPosition[];
@@ -41,4 +43,37 @@ export interface OrderPosition {
   cost: number;
   quantity: number;
   _id?: string;
+}
+
+export interface Filter {
+  start?: Date;
+  end?: Date;
+  order?: number;
+}
+
+export interface MaterialDatePicker extends MaterialInstance {
+  date?: Date
+}
+
+export interface OverviewPage {
+  orders: OverviewPageItem;
+  gain: OverviewPageItem;
+}
+
+export interface OverviewPageItem {
+  percent: number;
+  compare: number;
+  yesterday: number;
+  isHigher: boolean;
+}
+
+export interface AnalyticsPage {
+  average: number;
+  chart: AnalyticsChartItem[];
+}
+
+export interface AnalyticsChartItem {
+  gain: number;
+  order: number;
+  label: string;
 }
