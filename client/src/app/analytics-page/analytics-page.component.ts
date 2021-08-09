@@ -1,7 +1,7 @@
 import {AfterViewInit, Component, ElementRef, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import {AnalyticsService} from "../shared/services/analytics.service";
 import {AnalyticsPage} from "../shared/models";
-import {Chart} from "chart.js";
+import {Chart, registerables} from "chart.js";
 import {Subscription} from "rxjs";
 
 @Component({
@@ -21,6 +21,7 @@ export class AnalyticsPageComponent implements AfterViewInit, OnDestroy {
   constructor(
     private analyticsService: AnalyticsService
   ) {
+    Chart.register(...registerables);
   }
 
   ngAfterViewInit(): void {
@@ -43,14 +44,13 @@ export class AnalyticsPageComponent implements AfterViewInit, OnDestroy {
       orderConfig.labels = data.chart.map(item => item.label);
       orderConfig.data = data.chart.map(item => item.gain);
 
-
       const gainCtx = this.gainRef.nativeElement.getContext('2d');
-      const orderCtx = this.gainRef.nativeElement.getContext('2d');
+      const orderCtx = this.orderRef.nativeElement.getContext('2d');
       gainCtx.canvas.height = '300px';
       orderCtx.canvas.height = '300px';
 
       new Chart(gainCtx, createChartConfig(gainConfig));
-      new Chart(gainCtx, createChartConfig(orderConfig));
+      new Chart(orderCtx, createChartConfig(orderConfig));
 
       this.pending = false;
     });
@@ -71,14 +71,13 @@ function createChartConfig({labels, data, label, color}): any {
     },
     data: {
       labels,
-      datasets: [
-        {
-          label, data,
-          borderColor: color,
-          steppedLine: false,
-          fill: false
-        }
-      ]
+      datasets: [{
+        label,
+        data,
+        borderColor: color,
+        steppedLine: false,
+        fill: true
+      }]
     }
   };
 }
